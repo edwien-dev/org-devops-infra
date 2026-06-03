@@ -34,7 +34,7 @@ jobs:
 
     steps:
       - name: Checkout Código
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: 🗝️ Generar Token de acceso de GitHub App
         id: get_app_token
