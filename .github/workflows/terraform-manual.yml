@@ -17,6 +17,7 @@ on:
         default: 'plan'
         options:
           - plan
+          - apply
 
 permissions:
   contents: read
