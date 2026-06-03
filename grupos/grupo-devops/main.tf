@@ -25,6 +25,6 @@ resource "github_repository_environment" "env_prod" {
 resource "github_repository_environment_deployment_policy" "front_prod_main" {
   for_each         = var.repositorios
   repository       = each.value
-  environment_name = github_repository_environment.env_prod[each.key].environment
+  environment      = github_repository_environment.env_prod[each.key].environment
   branch_pattern   = "main"
 }
