@@ -32,6 +32,9 @@ jobs:
         working-directory: grupos/${{ github.event.inputs.grupo }}
 
     steps:
+      - name: Checkout Código
+        uses: actions/checkout@v4
+
       - name: 🗝️ Generar Token de acceso de GitHub App
         id: get_app_token
         uses: actions/create-github-app-token@v3
@@ -44,9 +47,6 @@ jobs:
         run: |
           echo "GITHUB_TOKEN=${{ steps.get_app_token.outputs.token }}" >> $GITHUB_ENV
           echo "GITHUB_OWNER=${{ github.repository_owner }}" >> $GITHUB_ENV
-
-      - name: Checkout Código
-        uses: actions/checkout@v4
 
       - name: Configurar Terraform
         uses: hashicorp/setup-terraform@v3
