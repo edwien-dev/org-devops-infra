@@ -31,10 +31,6 @@ jobs:
       run:
         working-directory: grupos/${{ github.event.inputs.grupo }}
 
-    env:
-      GITHUB_TOKEN: ${{ steps.get_app_token.outputs.token }}
-      GITHUB_OWNER: ${{ github.repository_owner }}
-
     steps:
       - name: 🗝️ Generar Token de acceso de GitHub App
         id: get_app_token
@@ -43,6 +39,11 @@ jobs:
           client-id: ${{ secrets.GIT_TOKEN_NORMALIZA_DEVOPS_CODE_APP_ID }}
           private-key: ${{ secrets.GIT_TOKEN_NORMALIZA_DEVOPS_CODE_APP_PRIVATE_KEY }}
           owner: ${{ github.repository_owner }}
+      
+      - name: ⚙️ Cargar Variables de Entorno Globales
+        run: |
+          echo "GITHUB_TOKEN=${{ steps.get_app_token.outputs.token }}" >> $GITHUB_ENV
+          echo "GITHUB_OWNER=${{ github.repository_owner }}" >> $GITHUB_ENV
 
       - name: Checkout Código
         uses: actions/checkout@v4
