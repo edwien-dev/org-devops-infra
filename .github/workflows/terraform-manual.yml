@@ -1,0 +1,69 @@
+name: "Terraform - Ejecución Manual"
+
+# 'workflow_dispatch' activa el botón manual en la interfaz de GitHub
+on:
+  workflow_dispatch:
+    inputs:
+      grupo:
+        description: 'Selecciona el grupo de repositorios a gestionar'
+        required: true
+        type: choice
+        options:
+          - grupo-devops
+      accion:
+        description: '¿Qué acción deseas ejecutar?'
+        required: true
+        type: choice
+        default: 'plan'
+        options:
+          - plan
+
+permissions:
+  contents: read
+
+jobs:
+  terraform:
+    name: "Terraform: ${{ github.event.inputs.grupo }} (${{ github.event.inputs.accion }})"
+    runs-on: ubuntu-latest
+
+    # Obliga a Terraform a pararse dentro de la carpeta del grupo seleccionado
+    defaults:
+      run:
+        working-directory: grupos/${{ github.event.inputs.grupo }}
+
+    env:
+      GITHUB_TOKEN: ${{ steps.get_app_token.outputs.token }}
+      GITHUB_OWNER: ${{ github.repository_owner }}
+
+    steps:
+      - name: 🗝️ Generar Token de acceso de GitHub App
+        id: get_app_token
+        uses: actions/create-github-app-token@v3
+        with:
+          client-id: ${{ secrets.GIT_TOKEN_NORMALIZA_DEVOPS_CODE_APP_ID }}
+          private-key: ${{ secrets.GIT_TOKEN_NORMALIZA_DEVOPS_CODE_APP_PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+
+      - name: Checkout Código
+        uses: actions/checkout@v4
+
+      - name: Configurar Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.7.0"
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Validate
+        run: terraform validate
+
+      # Se ejecuta solo si elegiste 'plan'
+      - name: Terraform Plan
+        if: ${{ github.event.inputs.accion == 'plan' }}
+        run: terraform plan
+
+      # Se ejecuta solo si elegiste 'apply'
+      - name: Terraform Apply
+        if: ${{ github.event.inputs.accion == 'apply' }}
+        run: terraform apply -auto-approve
