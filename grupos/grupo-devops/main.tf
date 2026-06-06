@@ -2,14 +2,14 @@
 resource "github_repository_environment" "env_dev" {
   for_each    = var.repositorios
   repository  = each.value
-  environment = "development2"
+  environment = "development"
 }
 
 # Crear el entorno de Producción (Con aprobadores y reglas de ramas)
 resource "github_repository_environment" "env_prod" {
   for_each    = var.repositorios
   repository  = each.value
-  environment = "production2"
+  environment = "production"
 
   reviewers {
     users = var.aprobadores_usuarios
