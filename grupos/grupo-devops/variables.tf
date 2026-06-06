@@ -7,5 +7,5 @@ variable "repositorios" {
 variable "aprobadores_usuarios" {
   type        = list(number)
   description = "IDs numéricos de GitHub de los líderes de Frontend"
-  default     = [93930384] # Reemplaza con el ID real del usuario de GitHub
+  default     = [] # Reemplaza con el ID real del usuario de GitHub
 }
