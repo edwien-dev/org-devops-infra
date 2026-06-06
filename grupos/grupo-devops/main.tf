@@ -15,6 +15,10 @@ resource "github_repository_environment" "env_prod" {
     users = var.aprobadores_usuarios
     teams = [17905952]
   }
+  
+  # Desactiva:
+  # "Allow administrators to bypass configured protection rules"
+  can_admins_bypass = false
 
   deployment_branch_policy {
     protected_branches     = false
