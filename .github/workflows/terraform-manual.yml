@@ -18,7 +18,8 @@ on:
         options:
           - plan
           - apply
-
+          - destroy
+          
 permissions:
   contents: read
 
@@ -69,3 +70,7 @@ jobs:
       - name: Terraform Apply
         if: ${{ github.event.inputs.accion == 'apply' }}
         run: terraform apply -auto-approve
+
+      - name: Destroy
+        if: ${{ github.event.inputs.accion == 'destroy' }}
+        run: terraform destroy -auto-approve
