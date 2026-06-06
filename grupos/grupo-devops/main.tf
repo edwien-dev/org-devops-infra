@@ -13,6 +13,7 @@ resource "github_repository_environment" "env_prod" {
 
   reviewers {
     users = var.aprobadores_usuarios
+    teams = [17905952]
   }
 
   deployment_branch_policy {
